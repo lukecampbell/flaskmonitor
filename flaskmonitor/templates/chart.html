@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chart</title>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'> </script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            var pid = "{{pid}}";
+            var vars = ["{{var}}"];
+        </script>
+        <link type="text/css" rel="stylesheet" href="/static/face.css" />
+        <script type="text/javascript" src="/static/chart.js"></script>
+        <script type="text/javascript" src="/static/utils.js"></script>
+
+
+    </head>
+    <body onload="timedRefresh(15 * 1000);">
+        <div id="{{var}}_div" class="large_graph"></div>
+    </body>
+</html>

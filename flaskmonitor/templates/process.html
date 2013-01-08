@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Process {{pm.process_id}}</title>
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'> </script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            var pid = "{{pm.process_id}}";
+            var vars = ["rss","mem","cpu"];
+        </script>
+        <link type="text/css" rel="stylesheet" href="/static/face.css" />
+        <script type="text/javascript" src="http://localhost:5000/static/chart.js"></script>
+
+
+    </head>
+    <body onload="timedRefresh(15 * 1000);">
+        <div id="panel">
+            <div id="pane">
+                <h3> {{pm.command.split()[0].split('/')[-1]}}</h3>
+                <table> 
+                    {% for field in stats._fields %}
+                    <tr>
+                        <td> {{ field }}                 </td>
+                        <td> {{ stats[loop.index0] }} </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+            <div id="graphs">
+                <div id="rss_div" class="graph"></div>
+                <div id="mem_div" class="graph"></div>
+                <div id="cpu_div" class="graph"></div>
+            </div>
+        </div>
+    </body>
+</html>
