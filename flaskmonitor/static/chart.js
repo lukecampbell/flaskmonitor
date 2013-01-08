@@ -36,8 +36,30 @@ function getData(comp) {
             }
         },
         success: function(data) {
-            console.debug(data);
             drawChart(data,comp);
+        }
+    });
+}
+
+function updateStat(stat,value) {
+    $('#' + stat).text(value);
+}
+
+function refreshStats() {
+    $.ajax({
+        url: "/stat/" + pid + ".json",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        beforeSend: function(x) {
+            if (x && x.overrideMimeType) {
+                x.overrideMimeType("application/json;charset=utf-8");
+            }
+        },
+        success: function(data) {
+            Object.keys(data).forEach(function(key) { 
+                updateStat(key, data[key]);
+            });
         }
     });
 }
@@ -47,6 +69,7 @@ function initialize() {
     vars.forEach(function(val) { 
         getData(val);
     });
+    refreshStats();
 }
 
 function redraw() { 

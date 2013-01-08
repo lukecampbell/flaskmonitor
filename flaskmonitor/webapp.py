@@ -39,6 +39,27 @@ def process(pid):
 @debug_wrapper
 def chart(pid,var):
     return render_template('chart.html', pid=pid, var=var)
+
+@app.route('/stat/<pid>.json')
+@debug_wrapper
+def stat(pid):
+    from flask import make_response, Response
+    resp = make_response(Response(),200)
+    if pid not in process_monitors:
+        pm = ProcessCapture(pid)
+        pm.start()
+        process_monitors[pid] = pm
+    else:
+        pm = process_monitors[pid]
+
+    stats = pm.stats()
+    
+    data =  json.encode(stats._asdict())
+    resp.data = data
+    resp.headers['Content-Type'] = 'application/json'
+    resp.headers['Content-Length'] = len(data)
+    return resp
+
     
 
 @app.route('/data/<pid>/<var>.json')

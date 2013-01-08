@@ -25,7 +25,7 @@
                     {% for field in stats._fields %}
                     <tr>
                         <td> {{ field }}                 </td>
-                        <td> {{ stats[loop.index0] }}    </td>
+                        <td> <div id="{{field}}"></div>  </td>
                     </tr>
                     {% endfor %}
                 </table>
