@@ -78,7 +78,6 @@ process_stats = [
      'wq'         ,# total number of workqueue threads
      'wqb'        ,# number of blocked workqueue threads
      'wqr'        ,# number of running workqueue threads
-     'wql'        ,# workqueue limit status (C = constrained thread limit, T = total thread limit)
      'xstat'      ,# exit or stop status (valid only for stopped or zombie process)
      ]
 
@@ -93,6 +92,7 @@ class ProcessCapture(object):
     command    = ""
     greenlet   = None
     done       = Event()
+
     
     def __init__(self,process_id):
         self.process_id = process_id
@@ -107,8 +107,9 @@ class ProcessCapture(object):
     def run(self):
         while not self.done.wait(1):
             try:
-                values = subprocess.check_output(("ps -o rss=,%%mem=,%%cpu= -p %s"%self.process_id).split())
-                rss, mem, cpu = values.split()
+                rss = self._stat('rss')
+                mem = self._stat('%mem')
+                cpu = self._stat('%cpu')
                 self.rss.append(float(rss))
                 self.mem.append(float(mem))
                 self.cpu.append(float(cpu))
