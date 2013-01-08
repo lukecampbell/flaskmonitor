@@ -50,13 +50,23 @@ def data(pid, var):
         pm = ProcessCapture(pid)
         pm.start()
         process_monitors[pid] = pm
-        return json.encode(dict(max=0.0, min=0.0, values=[['Time',var],[0.0,0.0]]))
-    pm = process_monitors[pid]
-    pdata = {
-        'min': min(getattr(pm,var)),
-        'max': max(getattr(pm,var)),
-        'values': [['Time', var]] + [[i, getattr(pm,var)[i]] for i in xrange(pm.values)]
-    }
+    else:
+        pm = process_monitors[pid]
+
+    if not pm.values:
+        process_monitors[pid] = pm
+        pdata = {
+            'min': 0,
+            'max': 0,
+            'values': [['Time', var]] + [[0,0]]
+            }
+    else:
+        pm = process_monitors[pid]
+        pdata = {
+            'min': min(getattr(pm,var) or [0]),
+            'max': max(getattr(pm,var) or [0]),
+            'values': [['Time', var]] + [[i, getattr(pm,var)[i]] for i in xrange(pm.values)]
+        }
     data =  json.encode(pdata)
     resp.data = data
     resp.headers['Content-Type'] = 'application/json'
