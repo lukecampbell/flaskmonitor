@@ -9,11 +9,15 @@
             var vars = ["rss","mem","cpu"];
         </script>
         <link type="text/css" rel="stylesheet" href="/static/face.css" />
-        <script type="text/javascript" src="http://localhost:5000/static/chart.js"></script>
+        <script type="text/javascript" src="/static/chart.js"></script>
+        <script type="text/javascript" src="/static/utils.js"></script>
 
 
     </head>
-    <body onload="timedRefresh(15 * 1000);">
+    <body onload="onLoad(5*1000);">
+        <div id="header">
+        </div>
+            
         <div id="panel">
             <div id="pane">
                 <h3> {{pm.command.split()[0].split('/')[-1]}}</h3>
@@ -21,7 +25,7 @@
                     {% for field in stats._fields %}
                     <tr>
                         <td> {{ field }}                 </td>
-                        <td> {{ stats[loop.index0] }} </td>
+                        <td> {{ stats[loop.index0] }}    </td>
                     </tr>
                     {% endfor %}
                 </table>

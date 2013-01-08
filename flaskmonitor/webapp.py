@@ -50,7 +50,7 @@ def data(pid, var):
         pm = ProcessCapture(pid)
         pm.start()
         process_monitors[pid] = pm
-        return json.encode(dict(max=0, min=0, values=[['Time',var],[0,0]]))
+        return json.encode(dict(max=0.0, min=0.0, values=[['Time',var],[0.0,0.0]]))
     pm = process_monitors[pid]
     pdata = {
         'min': min(getattr(pm,var)),
@@ -76,7 +76,7 @@ def monitors():
         fragments.append("<td>Stop</td>")
         fragments.append("</tr>")
     fragments.append("</table>")
-    return build_page("\n".join(fragments))
+    return build_page("\n".join(fragments), title='Process Monitor')
 
 @app.route('/stop/<pid>')
 @debug_wrapper

@@ -9,6 +9,8 @@
 
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(initialize);
+
+var initialized = false;
 function drawChart(rawData, variable) {
     var data = google.visualization.arrayToDataTable(rawData.values);
     var options = {
@@ -20,6 +22,7 @@ function drawChart(rawData, variable) {
 
     var chart = new google.visualization.ScatterChart(document.getElementById(variable + "_div"));
     chart.draw(data, options);
+    initialized = true;
 }
 function getData(comp) {
     $.ajax({
@@ -39,9 +42,20 @@ function getData(comp) {
     });
 }
 
+
 function initialize() {
     vars.forEach(function(val) { 
         getData(val);
     });
+}
+
+function redraw() { 
+    if(initialized) {
+        initialize();
+    }
+}
+
+function onLoad(delay) {
+    window.setInterval(redraw, delay);
 }
 
