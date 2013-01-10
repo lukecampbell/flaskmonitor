@@ -4,9 +4,14 @@ patch_all()
 
 from flask import Flask, render_template, url_for, redirect
 from process import ProcessCapture, process_list
+
+from log_dump import log_dump
+
 import traceback
 import functools
 import cjson as json
+import subprocess
+
 app = Flask('monitor')
 
 process_monitors = {}
@@ -26,13 +31,18 @@ def debug_wrapper(func):
 def index():
     return redirect(url_for('processes'))
 
+
 @app.route('/p/<pid>')
 @debug_wrapper
 def process(pid):
     if pid not in process_monitors:
-        pm = ProcessCapture(pid)
-        pm.start()
-        process_monitors[pid] = pm
+        try:
+            pm = ProcessCapture(pid)
+            pm.start()
+            process_monitors[pid] = pm
+        except subprocess.CalledProcessError:
+            return build_error_page('No such process, the proces %s does not exist.'%pid)
+            
     return render_template('process.html', pm=process_monitors[pid], stats=process_monitors[pid].stats())
 
 @app.route('/chart/<pid>/<var>')
@@ -52,21 +62,35 @@ def stat(pid):
     else:
         pm = process_monitors[pid]
 
-    stats = pm.stats()
+    try:
+        stats = pm.stats()
+        data =  json.encode(stats._asdict())
+    except subprocess.CalledProcessError:
+        data = "{}"
+        pm.stop()
+        del process_monitors[pid]
+        pm = None
+        
     
-    data =  json.encode(stats._asdict())
     resp.data = data
     resp.headers['Content-Type'] = 'application/json'
     resp.headers['Content-Length'] = len(data)
     return resp
 
-    
-
-@app.route('/data/<pid>/<var>.json')
+@app.route('/data/<pid>/<var>.csv')
 @debug_wrapper
-def data(pid, var):
+def csv_data(pid,var):
     from flask import make_response, Response
     resp = make_response(Response(),200)
+    pdata = dictify(pid,var)
+    data =  log_dump(pdata)
+    resp.data = data
+    resp.headers['Content-Type'] = 'text/x-comma-separated-values'
+    resp.headers['Content-Length'] = len(data)
+    return resp
+
+    
+def dictify(pid,var):
     if pid not in process_monitors:
         pm = ProcessCapture(pid)
         pm.start()
@@ -88,7 +112,14 @@ def data(pid, var):
             'max': max(getattr(pm,var) or [0]),
             'values': [['Time', var]] + [[i, getattr(pm,var)[i]] for i in xrange(pm.values)]
         }
-    data =  json.encode(pdata)
+    return pdata
+
+@app.route('/data/<pid>/<var>.json')
+@debug_wrapper
+def data(pid, var):
+    from flask import make_response, Response
+    resp = make_response(Response(),200)
+    data =  json.encode(dictify(pid,var))
     resp.data = data
     resp.headers['Content-Type'] = 'application/json'
     resp.headers['Content-Length'] = len(data)
@@ -102,9 +133,9 @@ def monitors():
     fragments.append("<table>")
     for pid, pm in process_monitors.iteritems():
         fragments.append("<tr>")
-        fragments.append("<td>%s</td>" % pid)
+        fragments.append("<td><a href='%s'>%s</a></td>" % (url_for('process',pid=pid),pid))
         fragments.append("<td>%s</td>" % pm.command)
-        fragments.append("<td>Stop</td>")
+        fragments.append("<td><a href='%s'>Stop</a></td>" % url_for('stop', pid=pid))
         fragments.append("</tr>")
     fragments.append("</table>")
     return build_page("\n".join(fragments), title='Process Monitor')
@@ -167,4 +198,4 @@ def build_page(content, title=''):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=5200)

@@ -24,3 +24,8 @@
     width: 700px;
     height: 400px;
 }
+
+.controls {
+    text-align: right;
+    padding-right: 20em;
+    }

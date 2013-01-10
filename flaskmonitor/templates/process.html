@@ -32,7 +32,11 @@
 
             </div>
             <div id="graphs">
-                <div id="rss_div" class="graph"></div>
+                <div id="rss_div" class="graph">
+                </div>
+                <div id='rss_download' class='controls'>
+                    <a href="{{url_for('csv_data', pid=pm.process_id, var='rss')}}">Download</a>
+                </div>
                 <div id="mem_div" class="graph"></div>
                 <div id="cpu_div" class="graph"></div>
             </div>
