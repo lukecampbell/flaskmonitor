@@ -21,6 +21,9 @@ function drawChart(rawData, variable) {
     };
 
     var chart = new google.visualization.ScatterChart(document.getElementById(variable + "_div"));
+    google.visualization.events.addListener(chart, 'select', function(e) {
+        window.location = '/data/' + pid + '/' + variable + '.csv';
+    });
     chart.draw(data, options);
     initialized = true;
 }
