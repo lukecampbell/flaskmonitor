@@ -12,7 +12,7 @@ import functools
 import cjson as json
 import subprocess
 
-app = Flask('monitor')
+app = Flask('monitor', template_folder='flaskmonitor/templates', static_folder='flaskmonitor/static')
 
 process_monitors = {}
 
