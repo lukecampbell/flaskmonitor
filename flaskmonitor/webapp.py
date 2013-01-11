@@ -197,5 +197,9 @@ def build_page(content, title=''):
     return s %(title, content)
 
 
+def launch():
+    app.run(port=5200)
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5200)
