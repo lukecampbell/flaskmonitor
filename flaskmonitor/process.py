@@ -85,7 +85,7 @@ process_stats_linux = [
 '%cpu', #       %CPU     cpu utilization of the process in "##.#" format. Currently, it is the CPU time used divided 
         #                by the time the process has been running (cputime/realtime ratio), expressed as a percentage. 
         #                It will not add up to 100% unless you are lucky. (alias pcpu).
-'%mem', #       %MEM     ratio of the process’s resident set size  to the physical memory on the machine, expressed as 
+'%mem', #       %MEM     ratio of the process's resident set size  to the physical memory on the machine, expressed as 
         #                a percentage. (alias pmem).
 'args', #       COMMAND  command with all its arguments as a string. Modifications to the arguments may be shown. The 
         #                output in this column may contain spaces. A process marked <defunct> is partly dead, waiting 
@@ -109,7 +109,7 @@ process_stats_linux = [
 'caught', #     CAUGHT   mask of the caught signals, see signal(7). According to the width of the field, a 32 or 64 
           #              bits mask in hexadecimal format is displayed.  (alias sig_catch, sigcatch).
 'cgroup', #     CGROUP   display control groups to which the process belonges.
-'class', #      CLS      scheduling class of the process. (alias policy, cls). Field’s possible values are:
+'class', #      CLS      scheduling class of the process. (alias policy, cls). Field's possible values are:
          #                    -   not reported
          #                    TS  SCHED_OTHER
          #                    FF  SCHED_FIFO
@@ -118,7 +118,7 @@ process_stats_linux = [
          #                    ISO SCHED_ISO
          #                    IDL SCHED_IDLE
          #                    ?   unknown value
-'cls',   #      CLS      scheduling class of the process. (alias policy, class). Field’s possible values are:
+'cls',   #      CLS      scheduling class of the process. (alias policy, class). Field's possible values are:
          #                    -   not reported
          #                    TS  SCHED_OTHER
          #                    FF  SCHED_FIFO
@@ -156,7 +156,7 @@ process_stats_linux = [
           #              field width permits, or a decimal representation otherwise.  (alias fsgroup).
 'flag', #       F        see f. (alias f, flags).
 'flags', #      F        see f. (alias f, flag).
-'fname', #      COMMAND  first 8 bytes of the base name of the process’s executable file. The output in this column may 
+'fname', #      COMMAND  first 8 bytes of the base name of the process's executable file. The output in this column may 
          #               contain spaces.
 'fuid', #       FUID     filesystem access user ID. (alias fsuid).
 'fuser', #      FUSER    filesystem access user ID. This will be the textual user ID, if it can be obtained and the 
@@ -170,7 +170,7 @@ process_stats_linux = [
 'ni', #         NI       nice value. This ranges from 19 (nicest) to -20 (not nice to others), see nice(1). (alias nice).
 'nice', #       NI       see ni. (alias ni).
 'nlwp', #       NLWP     number of lwps (threads) in the process. (alias thcount).
-'nwchan', #     WCHAN    address of the kernel function where the process is sleeping (use wchan if you want the kernel function name). Running tasks will display a dash (’-’) in this column.
+'nwchan', #     WCHAN    address of the kernel function where the process is sleeping (use wchan if you want the kernel function name). Running tasks will display a dash ('-') in this column.
 'pcpu', #       %CPU     see %cpu. (alias %cpu).
 'pending', #    PENDING  mask of the pending signals. See signal(7). Signals pending on the process are distinct from signals pending on individual threads. Use the m option or the -m option to see both. According to the width of the field, a 32-bit or 64-bit mask in hexadecimal format is displayed. (alias sig).
 'pgid', #       PGID     process group ID or, equivalently, the process ID of the process group leader. (alias pgrp).
