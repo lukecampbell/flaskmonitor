@@ -12,6 +12,7 @@ packages = ['flaskmonitor']
 requires = [
         'flask==0.9',
         'python-cjson==1.0.5',
+        'gevent==0.13.8',
         'numpy'
         ]
 

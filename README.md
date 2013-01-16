@@ -4,6 +4,35 @@ _A simple flask app to monitor processes._
 
 Author: Luke Campbell
 
+### Installing
+
+#### Clone the Repo
+
+```
+$ git clone https://github.com/lukecampbell/flaskmonitor.git flaskmonitor
+```
+
+#### Installing
+
+```
+$ python setup.py develop
+```
+
+### Running
+
+Inside the flaskmonitor root directory:
+```
+$ flaskmonitord
+```
+
+### Daemonizing
+
+```
+$ nohup flaskmonitord &
+```
+
+
+
 ### Copying 
 
 Copyright 2013 UC Regents
